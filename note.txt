@@ -1,0 +1,27 @@
+1-Crée un dossier view dans le repertoire WEB-INF et Mettez vos JSP a l'interieur
+2-Pour invoquer vos fonctions qui retourne un ModelView mettez une annotation de type Url et mettez le lien de l'url comme suit @Url(lien="Emp_all")
+3-Crée un fichier "Web.xml" dans le repertoire WEB-INF
+4-Dans le web.xml veuiller mettre comme suit :
+ <?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <servlet>
+        <servlet-name>FrontServlet</servlet-name>
+        <servlet-class>etu2021.Framework.servlet.FrontServlet</servlet-class>
+    <init-param>
+      <param-name>modelPackage</param-name>
+      <param-value>etu2021.Framework.model</param-value>
+    </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FrontServlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+</web-app>
+
+
+

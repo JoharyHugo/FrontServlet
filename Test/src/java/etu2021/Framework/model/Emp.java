@@ -1,0 +1,92 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package etu2021.Framework.model;
+
+import etu2021.Framework.annotation.Url;
+import etu2021.Framework.loadview.ModelView;
+import etu2021.Framework.upload.FileUploads;
+import java.util.Date;
+
+/**
+ *
+ * @author johary
+ */
+public class Emp {
+    int id;
+    String nom;
+    Date embauche;
+    FileUploads fichier;
+    
+    public int getid() {
+        return id;
+    }
+
+    public void setid(int id) {
+        this.id = id;
+    }
+   
+    
+    public String getnom() {
+        return nom;
+    }
+
+    public void setnom(String Nom) {
+        this.nom = Nom;
+    }
+
+    public Date getembauche() {
+        return embauche;
+    }
+
+    public void setembauche(Date embauche) {
+        this.embauche = embauche;
+    }
+
+    public FileUploads getfichier() {
+        return fichier;
+    }
+
+    public void setfichier(FileUploads fichier) {
+        this.fichier = fichier;
+    }
+    
+    
+    
+    @Url(lien="Emp_all")
+    public ModelView getallEmp(){
+       String cle="Employer";
+      this.nom="Johary";
+       String jsp="Emps.jsp";
+        ModelView rep=new ModelView();
+       rep.addItem(cle, nom);
+        rep.setUrl(jsp);
+        
+        return rep;
+    
+    }
+    @Url(lien="Save_Emp")
+    public ModelView save(){
+    String cle ="Emp";
+    String jsp="Empsave.jsp";
+    ModelView v=new ModelView();
+    v.addItem(cle, this);
+    v.setUrl(jsp);
+    return v;
+    }
+    
+    @Url(lien="Arg_Emp")
+    public ModelView affect(int id,String nom,Date embauche,FileUploads fichier){
+    String cle ="arguEmp";
+    String jsp="Emparg.jsp";
+    this.setid(id);
+    this.setnom(nom);
+    this.setembauche(embauche);
+    this.setfichier(fichier);
+    ModelView v=new ModelView();
+    v.addItem(cle, this);
+    v.setUrl(jsp);
+    return v;
+    }
+}
