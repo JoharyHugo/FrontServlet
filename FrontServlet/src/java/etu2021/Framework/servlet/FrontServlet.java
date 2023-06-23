@@ -214,7 +214,7 @@ public class FrontServlet extends HttpServlet {
         }
     }
     }
-    /*Rendre Par defaut tous les attribut de l'oblet*/
+    /*Rendre Par defaut tous les attribut de l'objet*/
     public static  void resetToDefault(Object obj) throws IllegalArgumentException, IllegalAccessException {
         Field[] fields = obj.getClass().getDeclaredFields();
         for (Field field : fields) {
