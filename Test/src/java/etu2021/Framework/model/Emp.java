@@ -5,6 +5,7 @@
 package etu2021.Framework.model;
 
 import etu2021.Framework.annotation.Url;
+
 import etu2021.Framework.loadview.ModelView;
 import etu2021.Framework.upload.FileUploads;
 import java.util.Date;
@@ -13,6 +14,7 @@ import java.util.Date;
  *
  * @author johary
  */
+
 public class Emp {
     int id;
     String nom;

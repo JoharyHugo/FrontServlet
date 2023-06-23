@@ -5,6 +5,7 @@
 package etu2021.Framework.servlet;
 
 import etu2021.Framework.Mapp.Mapping;
+import etu2021.Framework.annotation.Scope;
 import etu2021.Framework.annotation.Url;
 import etu2021.Framework.loadview.ModelView;
 import etu2021.Framework.upload.FileUploads;
@@ -16,6 +17,7 @@ import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -39,13 +41,14 @@ import javax.servlet.annotation.MultipartConfig;
  * @author johary
  */
  @MultipartConfig(
-    location = "/home/johary/Documents" // Chemin où les fichiers téléchargés seront temporairement stockés
+    // Chemin où les fichiers téléchargés seront temporairement stockés
     
 )
 public class FrontServlet extends HttpServlet {
     
       
     HashMap<String,Mapping> MappingUrls=new HashMap <String,Mapping> ();
+    HashMap<Class,Object> singleton=new HashMap<Class,Object>();
     String packages;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -61,8 +64,11 @@ public class FrontServlet extends HttpServlet {
        packages= getServletConfig().getInitParameter("modelPackage");
         try{
             this.scanget(packages);
+            this.getSingleton();
         }catch(URISyntaxException e){
         
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+            Logger.getLogger(FrontServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -191,6 +197,54 @@ public class FrontServlet extends HttpServlet {
             
        }
     }
+    /*Maka Ny class Izay manana annotation Scope  */
+    public void getSingleton() throws ClassNotFoundException, InstantiationException, IllegalAccessException{
+    for(Map.Entry<String,Mapping> entry:this.MappingUrls.entrySet()){
+        Mapping m=entry.getValue();
+        Class clazz=Class.forName(packages+"."+m.getClassName());
+        if(clazz.isAnnotationPresent(Scope.class)){
+            Scope scopeAnnotation = (Scope) clazz.getAnnotation(Scope.class);
+            boolean isSingletons = scopeAnnotation.isSingleton();
+            if(isSingletons=true){
+                Object ob=clazz.newInstance();
+                this.singleton.put(clazz, ob);
+                
+            }
+        
+        }
+    }
+    }
+    /*Rendre Par defaut tous les attribut de l'oblet*/
+    public static  void resetToDefault(Object obj) throws IllegalArgumentException, IllegalAccessException {
+        Field[] fields = obj.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            
+                if (!Modifier.isStatic(field.getModifiers())) {
+                    field.setAccessible(true);
+                    Class<?> fieldType = field.getType();
+                    Object defaultValue = getDefaultValue(fieldType);
+                    field.set(obj, defaultValue);
+                }
+            
+               
+            
+        }
+    }
+    public static  Object getDefaultValue(Class<?> type) {
+        if (type.equals(int.class)|| type.equals(Integer.class)) {
+            return 0;
+        } else if (type.equals(boolean.class)||type.equals(Boolean.class) ) {
+            return false;
+        } else if (type.equals(byte.class)|| type.equals(Byte.class)) {
+            return (byte) 0;
+        
+        } else if (type.equals(double.class) ||type.equals(Double.class) ) {
+            return 0.0;
+        } else {
+            return null;
+        }
+    }
+    
     public Method checkfonction(Object ob,String name){
         Method[] fonctions=ob.getClass().getDeclaredMethods();
         for(int i=0;i<fonctions.length;i++){
