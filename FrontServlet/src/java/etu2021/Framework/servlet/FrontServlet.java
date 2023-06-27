@@ -92,7 +92,7 @@ public class FrontServlet extends HttpServlet {
                if(keys.compareTo(page)==0){
                    try{
                       Class<?> clazz = Class.forName(packages+"."+mas.getClassName());  
-                      Object ob=clazz.newInstance();
+                      Object ob=this.checkSingleton(clazz);
                       Method meth=this.checkfonction(ob, mas.getMethods());
                       if(meth.getReturnType()==ModelView.class){
                      if(!parameterValue.isEmpty()){
@@ -203,9 +203,10 @@ public class FrontServlet extends HttpServlet {
         Mapping m=entry.getValue();
         Class clazz=Class.forName(packages+"."+m.getClassName());
         if(clazz.isAnnotationPresent(Scope.class)){
-            Scope scopeAnnotation = (Scope) clazz.getAnnotation(Scope.class);
+            Scope scopeAnnotation =  (Scope) clazz.getAnnotation(Scope.class);
             boolean isSingletons = scopeAnnotation.isSingleton();
-            if(isSingletons=true){
+            
+            if(isSingletons==true){
                 Object ob=clazz.newInstance();
                 this.singleton.put(clazz, ob);
                 
@@ -214,7 +215,21 @@ public class FrontServlet extends HttpServlet {
         }
     }
     }
-    /*Rendre Par defaut tous les attribut de l'oblet*/
+    
+    public Object checkSingleton(Class clazz) throws InstantiationException, IllegalAccessException{
+        for(Map.Entry<Class,Object> entry:this.singleton.entrySet()){
+            Class cle=entry.getKey();
+            Object ob=entry.getValue();
+            if(clazz.equals(cle)){
+                System.out.println("Singleton");
+               resetToDefault(ob);
+               return ob;
+            }
+        }
+        return clazz.newInstance();
+    
+    }
+    /*Rendre Par defaut tous les attribut de l'objet*/
     public static  void resetToDefault(Object obj) throws IllegalArgumentException, IllegalAccessException {
         Field[] fields = obj.getClass().getDeclaredFields();
         for (Field field : fields) {

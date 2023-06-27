@@ -4,6 +4,7 @@
  */
 package etu2021.Framework.model;
 
+import etu2021.Framework.annotation.Scope;
 import etu2021.Framework.annotation.Url;
 
 import etu2021.Framework.loadview.ModelView;
@@ -14,7 +15,7 @@ import java.util.Date;
  *
  * @author johary
  */
-
+@Scope(isSingleton=true)
 public class Emp {
     int id;
     String nom;
