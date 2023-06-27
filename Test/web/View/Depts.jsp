@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% String dep=(String)request.getAttribute("Departement"); %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,6 +13,6 @@
         <title>Dept</title>
     </head>
     <body>
-        <h1>Hello Dept  !</h1>
+        <h1>Hello <% out.println(dep);%>  !</h1>
     </body>
 </html>
