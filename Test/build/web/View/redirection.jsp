@@ -7,6 +7,5 @@
 <%@ page import="java.io.IOException" %>
 <%
    // Effectuer la redirection
-   response.sendRedirect("../index.jsp");
+   response.sendRedirect("./index.jsp");
 %>
-

@@ -1,0 +1,30 @@
+public FileUploads preparefile(String nom,HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, Exception{
+        FileUploads fichier=new FileUploads();
+        Part filePart = request.getPart(nom);
+        if (filePart != null) {
+              String submittedFileName = filePart.getSubmittedFileName();
+              System.out.println(nom);
+              fichier.setnom(submittedFileName );
+              InputStream fileInputStream = filePart.getInputStream();
+              ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
+
+              byte[] buffer = new byte[4096];
+              int bytesRead;
+               while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+                    byteOutputStream.write(buffer, 0, bytesRead);
+                }
+    
+            byte[] fileBytes = byteOutputStream.toByteArray();
+
+            Byte[] fileBytesWrapper = new Byte[fileBytes.length];
+            for (int i = 0; i < fileBytes.length; i++) {
+                fileBytesWrapper[i] = Byte.valueOf(fileBytes[i]);
+            }
+            fichier.setbit(fileBytesWrapper);
+            fileInputStream.close();
+            byteOutputStream.close();
+            return fichier;
+        }else{
+            throw new Exception("le fichier est vide");
+        }
+    }

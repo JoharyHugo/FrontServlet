@@ -12,31 +12,31 @@ import etu2021.Framework.loadview.ModelView;
  * @author johary
  */
 public class Login {
-    String name;
-    String mdp;
+    String Name;
+    String Mdp;
 
     public String getName() {
-        return name;
+        return Name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.Name = name;
     }
 
     public String getMdp() {
-        return mdp;
+        return Mdp;
     }
 
     public void setMdp(String mdp) {
-        this.mdp = mdp;
+        this.Mdp = mdp;
     }
-    @Url(lien="connect")
+    @Url(lien="Connect")
     public ModelView Connected(){
         ModelView v=new ModelView();
         String jsp="redirection.jsp";
         v.setUrl(jsp);
         v.addAuthenf("isConnected", true);
-        v.addAuthenf("Profil", this.name);
+        v.addAuthenf("Profil", this.Name);
         return v;
     }
 }
