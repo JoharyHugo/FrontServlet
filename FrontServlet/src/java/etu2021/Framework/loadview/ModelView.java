@@ -13,7 +13,7 @@ import java.util.HashMap;
 public class ModelView {
     String Url="View/";
     HashMap<String,Object> data=new HashMap<>();
-
+    HashMap<String,Object>authenf=new HashMap<>();
     public HashMap<String,Object> getData() {
         return this.data;
     }
@@ -29,9 +29,20 @@ public class ModelView {
     public void setUrl(String Url) {
         this.Url = this.Url+Url;
     }
+
+    public HashMap<String, Object> getAuthenf() {
+        return authenf;
+    }
+
+    public void setAuthenf(HashMap<String, Object> authenf) {
+        this.authenf = authenf;
+    }
     
     public void addItem(String keys,Object value){
         
         this.data.put(keys, value);
+    }
+    public void addAuthenf(String keys ,Object ob){
+        this.authenf.put(keys, ob);
     }
 }
