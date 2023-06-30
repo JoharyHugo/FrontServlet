@@ -9,7 +9,7 @@
     </init-param>
     <init-param>
       <param-name>connected</param-name>
-      <param-value>is_connected</param-value>
+      <param-value>isconnected</param-value>
     </init-param>
     <init-param>
       <param-name>profil</param-name>

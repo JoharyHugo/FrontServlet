@@ -35,8 +35,8 @@ public class Login {
         ModelView v=new ModelView();
         String jsp="redirection.jsp";
         v.setUrl(jsp);
-        v.addAuthenf("isConnected", true);
-        v.addAuthenf("Profil", this.Name);
+        v.addAuthenf("isconnected", true);
+        v.addAuthenf("profil", this.Name);
         return v;
     }
 }

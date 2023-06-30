@@ -35,6 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -50,6 +51,8 @@ public class FrontServlet extends HttpServlet {
     HashMap<String,Mapping> MappingUrls=new HashMap <String,Mapping> ();
     HashMap<Class,Object> singleton=new HashMap<Class,Object>();
     String packages;
+    String connected;
+    String profil;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -62,6 +65,8 @@ public class FrontServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
        packages= getServletConfig().getInitParameter("modelPackage");
+       this.connected=getServletConfig().getInitParameter("connected");
+       this.profil=getServletConfig().getInitParameter("profil");    
         try{
             this.scanget(packages);
             this.getSingleton();
@@ -423,7 +428,16 @@ public class FrontServlet extends HttpServlet {
         }
     }
     
-
+    public void preapareSession(HttpServletRequest request, HttpServletResponse response,ModelView v){
+        HttpSession session = request.getSession();
+        if(v.getAuthenf().size()!=0){
+             for (Map.Entry<String, Object> entry : v.getAuthenf().entrySet()) {
+                 session.setAttribute(entry.getKey(), entry.getValue());
+             }
+        }
+    
+    
+    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
