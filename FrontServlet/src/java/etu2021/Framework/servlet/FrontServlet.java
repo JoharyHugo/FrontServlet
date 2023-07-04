@@ -5,6 +5,7 @@
 package etu2021.Framework.servlet;
 
 import etu2021.Framework.Mapp.Mapping;
+import etu2021.Framework.annotation.Auth;
 import etu2021.Framework.annotation.Scope;
 import etu2021.Framework.annotation.Url;
 import etu2021.Framework.loadview.ModelView;
@@ -99,6 +100,7 @@ public class FrontServlet extends HttpServlet {
                       Class<?> clazz = Class.forName(packages+"."+mas.getClassName());  
                       Object ob=this.checkSingleton(clazz);
                       Method meth=this.checkfonction(ob, mas.getMethods());
+                      this.checkAuthenf(request, response, meth);
                       if(meth.getReturnType()==ModelView.class){
                      if(!parameterValue.isEmpty()){
                        //  System.out.println("Nadalo Condition");
@@ -106,7 +108,7 @@ public class FrontServlet extends HttpServlet {
                       // Method meth=ob.getClass().getMethod(mas.getMethods());
                       ModelView mod=(ModelView)this.prepareFonction(parameterValue, ob, meth,request,response);
                        //outs.println("WEB-INF"+mod.getUrl());
-                       
+                       this.preapareSession(request, response, mod);
                        for(Map.Entry<String,Object> e: mod.getData().entrySet()){
                             String k=e.getKey();
                             Object o=e.getValue();
@@ -124,7 +126,7 @@ public class FrontServlet extends HttpServlet {
                          
                       ModelView mod=(ModelView)meth.invoke(ob);
                        //outs.println("WEB-INF"+mod.getUrl());
-                       
+                        this.preapareSession(request, response, mod);
                        for(Map.Entry<String,Object> e: mod.getData().entrySet()){
                             String k=e.getKey();
                             Object o=e.getValue();
@@ -141,18 +143,19 @@ public class FrontServlet extends HttpServlet {
                       }         
                       
                    }catch (ClassNotFoundException e) {
-                       //outs.println(e);
+                       outs.println(e.getMessage());
                         e.printStackTrace(outs);
                       //e.printStackTrace();
         }           catch (IllegalArgumentException | InstantiationException | IllegalAccessException | SecurityException | NoSuchMethodException | InvocationTargetException ex) {
                         Logger.getLogger(FrontServlet.class.getName()).log(Level.SEVERE, null, ex);
-                       // outs.println(ex);
+                        outs.println(ex.getMessage());
                         ex.printStackTrace(outs);
                          //ex.printStackTrace();
                     } catch (Exception ex) {
                         Logger.getLogger(FrontServlet.class.getName()).log(Level.SEVERE, null, ex);
                            ex.printStackTrace(outs);
                             //ex.printStackTrace();
+                             outs.println(ex.getMessage());
                     }
                }
                
@@ -436,6 +439,29 @@ public class FrontServlet extends HttpServlet {
              }
         }
     
+    
+    }
+    public void checkAuthenf(HttpServletRequest request, HttpServletResponse response,Method m) throws Exception{
+        if(m.isAnnotationPresent(Auth.class)){
+         this.verifConnected(request, response);
+          Auth authenf= (Auth) m.getAnnotation(Auth.class);
+          String authen=authenf.authentification();
+          if(authen.compareTo("")!=0){
+               HttpSession session = request.getSession(false);
+               String profil=(String) session.getAttribute(this.profil);
+               if(profil.compareTo(authen)!=0){
+                   throw new Exception("Accès Refusé");
+               }
+          
+          }
+        }
+    }
+    
+    public void verifConnected(HttpServletRequest request, HttpServletResponse response) throws Exception{
+      HttpSession session = request.getSession(false);
+      if(session.getAttribute(this.connected)==null){
+          throw new Exception("Vous etes pas Connecte");
+      }
     
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
