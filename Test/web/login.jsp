@@ -1,6 +1,6 @@
 <%-- 
-    Document   : index
-    Created on : 16 mai 2023, 11:55:58
+    Document   : login
+    Created on : 30 juin 2023, 12:26:27
     Author     : johary
 --%>
 
@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Resultat</title>
+        <title>Login</title>
     </head>
     <style>
         form {
@@ -57,24 +57,18 @@ input[type="submit"]:hover {
   background-color: #0062cc;
 }
     </style>
-    
     <body>
-        <h1>Formulaire</h1>
-        <form action="Save_Emp" method="post" enctype="multipart/form-data">
-         <label for="id">id:</label>
-        <input type="number" name="id" id="id">
+        <h1>Login</h1>
+        <form action="Connect" method="post" >
+        <label for="objet">Name:</label>
+        <input type="text" name="Name" id="objet">
         <br><br>
-        <label for="objet">Nom:</label>
-        <input type="text" name="nom" id="objet">
+        <label for="Siege">Mdp:</label>
+        <input type="password" name="Mdp" id="Siege">
         <br><br>
-        <label for="Siege">Embauche:</label>
-        <input type="date" name="embauche" id="Siege">
-        <br><br>
-         <label for="fichier">fichier:</label>
-        <input type="file" name="fichier" id="fichier">
-        <br><br>
+       
          <input type="submit" values="Valider">  
         </form>
-        <a href="login.jsp">Login</a>
+        <a href="Dept_all">Test</a>
     </body>
 </html>

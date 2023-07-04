@@ -4,6 +4,7 @@
  */
 package etu2021.Framework.model;
 
+import etu2021.Framework.annotation.Auth;
 import etu2021.Framework.annotation.Scope;
 import etu2021.Framework.annotation.Url;
 
@@ -56,7 +57,7 @@ public class Emp {
     }
     
     
-    
+    @Auth(authentification="")
     @Url(lien="Emp_all")
     public ModelView getallEmp(){
        String cle="Employer";
@@ -69,6 +70,7 @@ public class Emp {
         return rep;
     
     }
+    @Auth(authentification="admin")
     @Url(lien="Save_Emp")
     public ModelView save(){
     String cle ="Emp";
