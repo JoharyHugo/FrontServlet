@@ -7,6 +7,7 @@ package etu2021.Framework.servlet;
 import etu2021.Framework.Mapp.Mapping;
 import etu2021.Framework.annotation.Auth;
 import etu2021.Framework.annotation.Scope;
+import etu2021.Framework.annotation.Session;
 import etu2021.Framework.annotation.Url;
 import etu2021.Framework.loadview.ModelView;
 import etu2021.Framework.upload.FileUploads;
@@ -24,12 +25,14 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -462,6 +465,26 @@ public class FrontServlet extends HttpServlet {
       if(session.getAttribute(this.connected)==null){
           throw new Exception("Vous etes pas Connecte");
       }
+    
+    }
+    
+    
+    public ModelView prepareview(HttpServletRequest request, HttpServletResponse response,Object ob,Method m) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+       if(m.isAnnotationPresent(Session.class)){
+         ServletContext servletContext = getServletContext();  
+         Enumeration<String> sessionNames = servletContext.getAttributeNames();
+         HttpSession session = request.getSession(false);
+          ModelView v=(ModelView) m.invoke(ob);
+         while (sessionNames.hasMoreElements()) {
+            String sessionName = sessionNames.nextElement();
+            v.addSession(sessionName, session.getAttribute(sessionName ));
+        }
+         v.addItem("Session", v.getSession());
+         return v ;
+       }else{
+         ModelView v=(ModelView) m.invoke(ob);
+         return v;
+       }
     
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

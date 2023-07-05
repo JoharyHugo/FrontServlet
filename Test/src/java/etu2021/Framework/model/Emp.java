@@ -6,6 +6,7 @@ package etu2021.Framework.model;
 
 import etu2021.Framework.annotation.Auth;
 import etu2021.Framework.annotation.Scope;
+import etu2021.Framework.annotation.Session;
 import etu2021.Framework.annotation.Url;
 
 import etu2021.Framework.loadview.ModelView;
@@ -93,5 +94,13 @@ public class Emp {
     v.addItem(cle, this);
     v.setUrl(jsp);
     return v;
+    }
+    
+    @Session
+    @Url(lien="Sessions")
+    public ModelView testsession(){
+    ModelView m=new ModelView();
+    m.setUrl("Session.jsp");
+    return m;
     }
 }

@@ -14,6 +14,18 @@ public class ModelView {
     String Url="View/";
     HashMap<String,Object> data=new HashMap<>();
     HashMap<String,Object>authenf=new HashMap<>();
+    HashMap<String,Object> session=new HashMap<>();
+
+    public HashMap<String, Object> getSession() {
+        return session;
+    }
+
+    public void setSession(HashMap<String, Object> session) {
+        this.session = session;
+    }
+    
+    
+    
     public HashMap<String,Object> getData() {
         return this.data;
     }
@@ -44,5 +56,9 @@ public class ModelView {
     }
     public void addAuthenf(String keys ,Object ob){
         this.authenf.put(keys, ob);
+    }
+    
+    public void addSession(String keys ,Object ob){
+         this.session.put(keys, ob);
     }
 }
