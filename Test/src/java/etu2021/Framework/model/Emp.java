@@ -95,9 +95,8 @@ public class Emp {
     v.setUrl(jsp);
     return v;
     }
-    
-    @Session
     @Url(lien="Sessions")
+    @Session
     public ModelView testsession(){
     ModelView m=new ModelView();
     m.setUrl("Session.jsp");
