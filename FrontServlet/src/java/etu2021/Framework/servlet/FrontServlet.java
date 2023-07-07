@@ -117,6 +117,8 @@ public class FrontServlet extends HttpServlet {
                        //outs.println("WEB-INF"+mod.getUrl());
                        this.preapareSession(request, response, mod);
                        this.prepareview(request, response, mod, meth);
+                       this.effacerTouslesSession(request, response, mod);
+                       this.effacerSessionSpecifique(request, response, mod);
                        /*for(Map.Entry<String,Object> e: mod.getData().entrySet()){
                             String k=e.getKey();
                             Object o=e.getValue();
@@ -130,21 +132,12 @@ public class FrontServlet extends HttpServlet {
                      
                      
                      }else{
-                      // Method meth=ob.getClass().getMethod(mas.getMethods());
-                      //System.out.println("Nom fonction"+meth.getName());   
                       ModelView mod=(ModelView) meth.invoke(ob);
                        //outs.println("WEB-INF"+mod.getUrl());
                         this.preapareSession(request, response, mod);
                         this.prepareview(request, response, mod, meth);
-                       /*for(Map.Entry<String,Object> e: mod.getData().entrySet()){
-                            String k=e.getKey();
-                            Object o=e.getValue();
-                            request.setAttribute(k, o);
-                       }
-                       String chemin=   mod.getUrl();
-                       outs.println(chemin);
-                       RequestDispatcher dispat =request.getRequestDispatcher(chemin);
-                       dispat.forward(request,response);*/
+                        this.effacerTouslesSession(request, response, mod);
+                       this.effacerSessionSpecifique(request, response, mod);
                        this.prepareDispatch(request, response, mod);
                      }
                       }else{
@@ -533,6 +526,28 @@ public class FrontServlet extends HttpServlet {
             }
         }else{
           throw new Exception("La fonction retourne un Void ou ne Possede pas l'annotation APIrest");
+        }
+    
+    }
+    
+    public void effacerTouslesSession(HttpServletRequest request, HttpServletResponse response,ModelView v){
+            
+        if(v.getisInvalidateSession()==true){
+            
+            HttpSession session = request.getSession();
+            session.invalidate();
+        }
+    }
+    
+    public void effacerSessionSpecifique(HttpServletRequest request, HttpServletResponse response,ModelView v){
+        
+        if(!v.getRemoveSession().isEmpty()){
+           HttpSession session = request.getSession();
+           
+           for(int i=0;i<v.getRemoveSession().size();i++){
+               String nomSession=(String)v.getRemoveSession().elementAt(i);
+                session.removeAttribute(nomSession);
+           }
         }
     
     }

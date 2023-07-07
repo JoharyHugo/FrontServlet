@@ -72,5 +72,12 @@ input[type="submit"]:hover {
         <a href="Emp_all">Test</a>
         <br>
         <a href="Sessions">Test Session</a>
+        <br>
+        <a href="Deconnect" style="color: red">Deconnexion</a>
+        <br>
+        <a href="DeconnectProfil" style="color: red" >Deconnexion profil</a>
+        <br>
+        <a href="DeconnectConnexion" style="color: red" >Deconnexion Session</a>
+        
     </body>
 </html>

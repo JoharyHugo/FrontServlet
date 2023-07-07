@@ -5,6 +5,7 @@
 package etu2021.Framework.loadview;
 
 import java.util.HashMap;
+import java.util.Vector;
 
 /**
  *
@@ -16,7 +17,25 @@ public class ModelView {
     HashMap<String,Object>authenf=new HashMap<>();
     HashMap<String,Object> session=new HashMap<>();
     boolean isJson=false;
+    boolean invalidateSession=false;
+    Vector<String> removeSession=new Vector();
 
+    public boolean getisInvalidateSession() {
+        return invalidateSession;
+    }
+
+    public void setinvalidateSession(boolean invalidateSession) {
+        this.invalidateSession = invalidateSession;
+    }
+
+    public Vector<String> getRemoveSession() {
+        return removeSession;
+    }
+
+    public void setRemoveSession(Vector<String> removeSession) {
+        this.removeSession = removeSession;
+    }
+    
     public boolean getisJson() {
         return isJson;
     }

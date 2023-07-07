@@ -40,4 +40,31 @@ public class Login {
           //v.addAuthenf("mdp", this.Mdp);
         return v;
     }
+    
+    @Url(lien="Deconnect")
+    public ModelView DeconnectedTotal(){
+        ModelView v=new ModelView();
+        String jsp="redirection.jsp";
+        v.setUrl(jsp);
+        v.setinvalidateSession(true);
+        return v;
+    }
+    
+    @Url(lien="DeconnectProfil")
+    public ModelView DeconnectedAdmin(){
+        ModelView v=new ModelView();
+        String jsp="redirection.jsp";
+        v.setUrl(jsp);
+        v.getRemoveSession().add("profil");
+        return v;
+    }
+    
+     @Url(lien="DeconnectConnexion")
+    public ModelView DeconnectedConnexion(){
+        ModelView v=new ModelView();
+        String jsp="redirection.jsp";
+        v.setUrl(jsp);
+        v.getRemoveSession().add("isconnected");
+        return v;
+    }
 }
