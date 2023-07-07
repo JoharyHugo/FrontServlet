@@ -9,7 +9,7 @@ sudo chmod 777 -R temp
 cd ./temp/    
 jar -cf ./myWebApp.war *  
 sudo chmod 777 myWebApp.war
-mv ./myWebApp.war /home/johary/"ITU TP"/"TP Mr Naina"
+mv ./myWebApp.war /home/johary/"ITU TP"/S4/"TP Mr Naina"
 cd ..
 cp ./myWebApp.war /opt/tomcat/apache-tomcat-9.0.71/webapps
 rm -r ./temp
