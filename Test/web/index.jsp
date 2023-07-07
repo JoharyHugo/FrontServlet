@@ -60,7 +60,7 @@ input[type="submit"]:hover {
     
     <body>
         <h1>Formulaire</h1>
-        <form action="EmpRay" method="post" enctype="multipart/form-data">
+        <form action="Save_Emp" method="post" enctype="multipart/form-data">
          <label for="id">id:</label>
         <input type="number" name="id" id="id">
         <br><br>
