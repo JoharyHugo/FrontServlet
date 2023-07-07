@@ -4,6 +4,8 @@
  */
 package etu2021.Framework.servlet;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import etu2021.Framework.Mapp.Mapping;
 import etu2021.Framework.annotation.Auth;
 import etu2021.Framework.annotation.Scope;
@@ -114,7 +116,7 @@ public class FrontServlet extends HttpServlet {
                        //outs.println("WEB-INF"+mod.getUrl());
                        this.preapareSession(request, response, mod);
                        this.prepareview(request, response, mod, meth);
-                       for(Map.Entry<String,Object> e: mod.getData().entrySet()){
+                       /*for(Map.Entry<String,Object> e: mod.getData().entrySet()){
                             String k=e.getKey();
                             Object o=e.getValue();
                             request.setAttribute(k, o);
@@ -122,18 +124,18 @@ public class FrontServlet extends HttpServlet {
                        String chemin=   mod.getUrl();
                        outs.println(chemin);
                        RequestDispatcher dispat =request.getRequestDispatcher(chemin);
-                       dispat.forward(request,response);
-                     
+                       dispat.forward(request,response);*/
+                       this.prepareDispatch(request, response, mod);
                      
                      
                      }else{
                       // Method meth=ob.getClass().getMethod(mas.getMethods());
-                      System.out.println("Nom fonction"+meth.getName());   
+                      //System.out.println("Nom fonction"+meth.getName());   
                       ModelView mod=(ModelView) meth.invoke(ob);
                        //outs.println("WEB-INF"+mod.getUrl());
                         this.preapareSession(request, response, mod);
                         this.prepareview(request, response, mod, meth);
-                       for(Map.Entry<String,Object> e: mod.getData().entrySet()){
+                       /*for(Map.Entry<String,Object> e: mod.getData().entrySet()){
                             String k=e.getKey();
                             Object o=e.getValue();
                             request.setAttribute(k, o);
@@ -141,8 +143,8 @@ public class FrontServlet extends HttpServlet {
                        String chemin=   mod.getUrl();
                        outs.println(chemin);
                        RequestDispatcher dispat =request.getRequestDispatcher(chemin);
-                       dispat.forward(request,response);
-                     
+                       dispat.forward(request,response);*/
+                       this.prepareDispatch(request, response, mod);
                      }
                       }else{
                       throw new Exception("La vue ne retourne pas un ModelView");
@@ -492,6 +494,25 @@ public class FrontServlet extends HttpServlet {
          //return v ;
        }
     
+    }
+    
+    public void prepareDispatch(HttpServletRequest request, HttpServletResponse response,ModelView v) throws ServletException, IOException{
+        if(v.getisJson()==false){
+            for(Map.Entry<String,Object> e: v.getData().entrySet()){
+                            String k=e.getKey();
+                            Object o=e.getValue();
+                            request.setAttribute(k, o);
+            }
+            String chemin=   v.getUrl();
+            System.out.println(chemin);
+            RequestDispatcher dispat =request.getRequestDispatcher(chemin);
+            dispat.forward(request,response);
+        }else{
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String json = gson.toJson(v.getData());
+        PrintWriter out = response.getWriter();
+        out.println(json);
+        }
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
