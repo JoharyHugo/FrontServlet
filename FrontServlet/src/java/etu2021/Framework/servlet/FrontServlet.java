@@ -479,9 +479,10 @@ public class FrontServlet extends HttpServlet {
         }
         if(m.isAnnotationPresent(Session.class)){
            System.out.println("Nandalo fa session");
-         ServletContext servletContext = getServletContext();  
-         Enumeration<String> sessionNames = servletContext.getAttributeNames();
-         HttpSession session = request.getSession(false);
+         
+          HttpSession session = request.getSession();
+         Enumeration<String> sessionNames = session.getAttributeNames();
+        
          while (sessionNames.hasMoreElements()) {
             String sessionName = sessionNames.nextElement();
             System.out.println("Nom Session: "+sessionName);
