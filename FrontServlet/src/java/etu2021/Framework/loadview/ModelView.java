@@ -15,7 +15,18 @@ public class ModelView {
     HashMap<String,Object> data=new HashMap<>();
     HashMap<String,Object>authenf=new HashMap<>();
     HashMap<String,Object> session=new HashMap<>();
+    boolean isJson=false;
 
+    public boolean getisJson() {
+        return isJson;
+    }
+
+    public void setisJson(boolean isJson) {
+        this.isJson = isJson;
+    }
+    
+    
+    
     public HashMap<String, Object> getSession() {
         return session;
     }

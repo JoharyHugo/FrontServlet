@@ -63,11 +63,12 @@ public class Emp {
     public ModelView getallEmp(){
        String cle="Employer";
       this.nom="Johary";
+      this.id=1;
        String jsp="Emps.jsp";
         ModelView rep=new ModelView();
        rep.addItem(cle, nom);
         rep.setUrl(jsp);
-        
+        rep.setisJson(true);
         return rep;
     
     }
@@ -79,6 +80,7 @@ public class Emp {
     ModelView v=new ModelView();
     v.addItem(cle, this);
     v.setUrl(jsp);
+    v.setisJson(true);
     return v;
     }
     
