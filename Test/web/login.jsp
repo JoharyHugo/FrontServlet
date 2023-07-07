@@ -69,7 +69,7 @@ input[type="submit"]:hover {
        
          <input type="submit" values="Valider">  
         </form>
-        <a href="Dept_all">Test</a>
+        <a href="Emp_all">Test</a>
         <br>
         <a href="Sessions">Test Session</a>
     </body>
