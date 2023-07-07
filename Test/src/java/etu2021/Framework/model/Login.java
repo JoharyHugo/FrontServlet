@@ -37,6 +37,7 @@ public class Login {
         v.setUrl(jsp);
         v.addAuthenf("isconnected", true);
         v.addAuthenf("profil", this.Name);
+          //v.addAuthenf("mdp", this.Mdp);
         return v;
     }
 }

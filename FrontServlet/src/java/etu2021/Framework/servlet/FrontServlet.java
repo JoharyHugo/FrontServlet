@@ -7,6 +7,7 @@ package etu2021.Framework.servlet;
 import etu2021.Framework.Mapp.Mapping;
 import etu2021.Framework.annotation.Auth;
 import etu2021.Framework.annotation.Scope;
+import etu2021.Framework.annotation.Session;
 import etu2021.Framework.annotation.Url;
 import etu2021.Framework.loadview.ModelView;
 import etu2021.Framework.upload.FileUploads;
@@ -15,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -24,12 +26,14 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -109,6 +113,7 @@ public class FrontServlet extends HttpServlet {
                       ModelView mod=(ModelView)this.prepareFonction(parameterValue, ob, meth,request,response);
                        //outs.println("WEB-INF"+mod.getUrl());
                        this.preapareSession(request, response, mod);
+                       this.prepareview(request, response, mod, meth);
                        for(Map.Entry<String,Object> e: mod.getData().entrySet()){
                             String k=e.getKey();
                             Object o=e.getValue();
@@ -123,10 +128,11 @@ public class FrontServlet extends HttpServlet {
                      
                      }else{
                       // Method meth=ob.getClass().getMethod(mas.getMethods());
-                         
-                      ModelView mod=(ModelView)meth.invoke(ob);
+                      System.out.println("Nom fonction"+meth.getName());   
+                      ModelView mod=(ModelView) meth.invoke(ob);
                        //outs.println("WEB-INF"+mod.getUrl());
                         this.preapareSession(request, response, mod);
+                        this.prepareview(request, response, mod, meth);
                        for(Map.Entry<String,Object> e: mod.getData().entrySet()){
                             String k=e.getKey();
                             Object o=e.getValue();
@@ -432,7 +438,7 @@ public class FrontServlet extends HttpServlet {
     }
     
     public void preapareSession(HttpServletRequest request, HttpServletResponse response,ModelView v){
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(true);
         if(v.getAuthenf().size()!=0){
              for (Map.Entry<String, Object> entry : v.getAuthenf().entrySet()) {
                  session.setAttribute(entry.getKey(), entry.getValue());
@@ -462,6 +468,29 @@ public class FrontServlet extends HttpServlet {
       if(session.getAttribute(this.connected)==null){
           throw new Exception("Vous etes pas Connecte");
       }
+    
+    }
+    
+    
+    public void prepareview(HttpServletRequest request, HttpServletResponse response,ModelView v,Method m) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+        Annotation[] annotations = m.getAnnotations();
+        for (Annotation annotation : annotations) {
+            System.out.println(annotation);
+        }
+        if(m.isAnnotationPresent(Session.class)){
+           System.out.println("Nandalo fa session");
+         
+          HttpSession session = request.getSession();
+         Enumeration<String> sessionNames = session.getAttributeNames();
+        
+         while (sessionNames.hasMoreElements()) {
+            String sessionName = sessionNames.nextElement();
+            System.out.println("Nom Session: "+sessionName);
+            v.addSession(sessionName, session.getAttribute(sessionName ));
+        }
+         v.addItem("session", v.getSession());/* Reuperation du HashMap Session qui contient tous les session */
+         //return v ;
+       }
     
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
