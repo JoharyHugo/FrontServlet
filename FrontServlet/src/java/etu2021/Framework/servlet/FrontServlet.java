@@ -7,6 +7,7 @@ package etu2021.Framework.servlet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import etu2021.Framework.Mapp.Mapping;
+import etu2021.Framework.annotation.APIrest;
 import etu2021.Framework.annotation.Auth;
 import etu2021.Framework.annotation.Scope;
 import etu2021.Framework.annotation.Session;
@@ -147,7 +148,7 @@ public class FrontServlet extends HttpServlet {
                        this.prepareDispatch(request, response, mod);
                      }
                       }else{
-                      throw new Exception("La vue ne retourne pas un ModelView");
+                       this.checkVerifFonction(request, response, parameterValue, meth, ob);
                       }         
                       
                    }catch (ClassNotFoundException e) {
@@ -513,6 +514,27 @@ public class FrontServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         out.println(json);
         }
+    }
+    
+    public void checkVerifFonction(HttpServletRequest request, HttpServletResponse response,Map<String,String[]> valeur,Method fonction,Object ob) throws Exception{
+        
+        if(fonction.isAnnotationPresent(APIrest.class)&& !fonction.getReturnType().equals(Void.TYPE)){
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            if(!valeur.isEmpty()){
+                 Object obj=this.prepareFonction(valeur, ob, fonction, request, response);
+                  String json = gson.toJson(obj);
+                  PrintWriter out = response.getWriter();
+                  out.println(json);
+            }else{
+                Object obj=fonction.invoke(ob);
+                String json = gson.toJson(obj);
+                PrintWriter out = response.getWriter();
+                out.println(json);
+            }
+        }else{
+          throw new Exception("La fonction retourne un Void ou ne Possede pas l'annotation APIrest");
+        }
+    
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

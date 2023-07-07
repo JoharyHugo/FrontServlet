@@ -4,6 +4,7 @@
  */
 package etu2021.Framework.model;
 
+import etu2021.Framework.annotation.APIrest;
 import etu2021.Framework.annotation.Auth;
 import etu2021.Framework.annotation.Scope;
 import etu2021.Framework.annotation.Session;
@@ -103,5 +104,15 @@ public class Emp {
     ModelView m=new ModelView();
     m.setUrl("Session.jsp");
     return m;
+    }
+    @APIrest
+    @Url(lien="EmpRay")
+    public Emp employerRay(){
+        Emp e=new Emp();
+        e.setid(id);
+        e.setnom(this.nom);
+        e.setembauche(embauche);
+        e.setfichier(fichier);
+        return e;
     }
 }
